@@ -11,13 +11,10 @@ import csv
 # Detection (tune HSV yourself)
 # ----------------------------
 def detect_brown_circle(crop):
-    """Detect the largest dark brown circle in a cropped frame.
-    Returns (x, y, r) or (nan, nan, nan) if not found.
-    """
     hsv = cv2.cvtColor(crop, cv2.COLOR_BGR2HSV)
     # NOTE: Tune these thresholds to your droplet hue/saturation/value
-    lower_brown = np.array([10, 100, 20])
-    upper_brown = np.array([30, 255, 200])
+    lower_brown = np.array([170, 30, 40])
+    upper_brown = np.array([180, 100, 150])
 
     mask = cv2.inRange(hsv, lower_brown, upper_brown)
     masked = cv2.bitwise_and(crop, crop, mask=mask)
@@ -27,7 +24,7 @@ def detect_brown_circle(crop):
 
     circles = cv2.HoughCircles(
         blur, cv2.HOUGH_GRADIENT, dp=1.2, minDist=20,
-        param1=50, param2=30, minRadius=5, maxRadius=100
+        param1=50, param2=50, minRadius=30, maxRadius=100
     )
 
     if circles is not None:
@@ -312,9 +309,9 @@ class DropletTrackerUI:
 # ----------------------------
 if __name__ == "__main__":
     # Configure these paths/params as needed
-    VIDEO_PATH = "sourcefile.mp4"
-    START_FRAME = 500  # set to 0 to start from the beginning
-    OUTPUT_FOLDER = "results"
+    VIDEO_PATH = "source_video.mp4"
+    START_FRAME = 1200  # set to 0 to start from the beginning
+    OUTPUT_FOLDER = "output"
 
     root = tk.Tk()
     root.title("Droplet Tracker v0.2.2")
