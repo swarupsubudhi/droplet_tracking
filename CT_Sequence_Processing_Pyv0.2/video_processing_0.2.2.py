@@ -13,11 +13,12 @@ import csv
 def detect_brown_circle(crop):
     hsv = cv2.cvtColor(crop, cv2.COLOR_BGR2HSV)
     # NOTE: Tune these thresholds to your droplet hue/saturation/value
-    lower_brown = np.array([170, 30, 40])
-    upper_brown = np.array([180, 100, 150])
+    lower_brown = np.array([0, 0, 0])
+    upper_brown = np.array([179, 255, 155])
 
     mask = cv2.inRange(hsv, lower_brown, upper_brown)
     masked = cv2.bitwise_and(crop, crop, mask=mask)
+    cv2.imshow("Masked Output", mask)
 
     gray = cv2.cvtColor(masked, cv2.COLOR_BGR2GRAY)
     blur = cv2.GaussianBlur(gray, (9, 9), 2)
@@ -309,9 +310,9 @@ class DropletTrackerUI:
 # ----------------------------
 if __name__ == "__main__":
     # Configure these paths/params as needed
-    VIDEO_PATH = "source_video.mp4"
+    VIDEO_PATH = "C:/Research_Files_Swarup/R11-DropsCT/Expt_Data/Raw_Data_Videos/S25.mp4"
     START_FRAME = 1200  # set to 0 to start from the beginning
-    OUTPUT_FOLDER = "output"
+    OUTPUT_FOLDER = "results_0.2.2"
 
     root = tk.Tk()
     root.title("Droplet Tracker v0.2.2")
